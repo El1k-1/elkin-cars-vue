@@ -1,6 +1,11 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import CarsView from '@/views/CarsView.vue'
+import LoginView from '@/views/LoginView.vue'
+import ContactsVue from '@/views/ContactsVue.vue'
+import InfoView from '@/views/InfoView.vue'
+import ServiceView from '@/views/ServiceView.vue'
 
 Vue.use(VueRouter)
 
@@ -13,27 +18,27 @@ const routes = [
   {
     path: '/info',
     name: 'info',
-    component: HomeView
+    component: InfoView
   },
   {
     path: '/cars',
     name: 'cars',
-    component: HomeView
+    component: CarsView
   },
   {
     path: '/service',
     name: 'service',
-    component: HomeView
+    component: ServiceView
   },
   {
     path: '/contacts',
     name: 'contacts',
-    component: HomeView
+    component: ContactsVue
   },
   {
     path: '/login',
     name: 'login',
-    component: HomeView
+    component: LoginView
   }
 ]
 

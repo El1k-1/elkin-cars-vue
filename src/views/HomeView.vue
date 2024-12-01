@@ -6,7 +6,7 @@
           <p>Посуточная аренда автомобилей</p>
         </div>
         <div class="rent-title-header">
-          <v-btn class="add-car pl-3 pr-3">
+          <v-btn @click="navigateTo('cars')" class="add-car pl-3 pr-3">
               <v-icon size=40>mdi-plus</v-icon>
             <div class="ml-6">
               Выбрать машину
@@ -27,11 +27,13 @@
 </template>
 
 <script>
+import { useRouter } from 'vue-router/composables'
 
 export default {
   name: 'HomeView',
 
   setup () {
+    const router = useRouter()
     const cards = [
       {
         title: '5000+',
@@ -50,8 +52,12 @@ export default {
         subtitle: 'слаженной работы'
       }
     ]
+    const navigateTo = (route) => {
+      if (router.currentRoute.name !== route) { router.push({ name: route }) }
+    }
     return {
-      cards
+      cards,
+      navigateTo
     }
   }
 }

@@ -1,32 +1,37 @@
 <template>
   <v-app>
 
-    <div class="header">
+    <div class="header" v-if="isAuthificated">
       <div class="header-row">
         <div class="header-logo montaga">ЁLKIN-CARS</div>
         <div class="header-row-panel">
-          <v-btn text @click="navigateTo(button.route)" v-for="button in navButtons" :key="button.name"> {{ button.name
-            }}</v-btn>
-        </div>
-        <div class="header-row-icons">
-          <v-menu :location="location">
-            <template v-slot:activator="{ on }">
-              <v-btn icon color="primary" v-on="on">
-                <v-icon size="32">mdi-account</v-icon>
-              </v-btn>
-            </template>
-
-            <v-list>
-              <v-list-item>
-                <div>elkin</div>
-              </v-list-item>
-              <v-list-item>
-                <v-btn text color="error">
-                  <div>Выход</div>
+          <v-btn
+          text
+          @click="navigateTo(button.route)"
+          v-for="button in navButtons"
+          :key="button.name"
+          :class="router.currentRoute.name === button.route ? 'header-row-panel-visited' : ''">
+          {{ button.name }}</v-btn>
+            </div>
+            <div class=" header-row-icons">
+            <v-menu :location="location">
+              <template v-slot:activator="{ on }">
+                <v-btn icon color="primary" v-on="on">
+                  <v-icon size="32">mdi-account</v-icon>
                 </v-btn>
-              </v-list-item>
-            </v-list>
-          </v-menu>
+              </template>
+
+              <v-list>
+                <v-list-item>
+                  <div>elkin</div>
+                </v-list-item>
+                <v-list-item>
+                  <v-btn text color="error">
+                    <div>Выход</div>
+                  </v-btn>
+                </v-list-item>
+              </v-list>
+            </v-menu>
         </div>
       </div>
       <div class="header-line">
@@ -41,8 +46,9 @@
 </template>
 
 <script>
-import { useRouter } from 'vue-router/composables'
+import { useRoute, useRouter } from 'vue-router/composables'
 import lineSVG from './components/line.vue'
+import { onMounted, ref, watch } from 'vue'
 export default {
   name: 'App',
   components: {
@@ -77,14 +83,28 @@ export default {
       { title: 'Выход' }
     ]
     const router = useRouter()
+    const route = useRoute()
 
+    const isAuthificated = ref(true)
     const navigateTo = (route) => {
       if (router.currentRoute.name !== route) { router.push({ name: route }) }
     }
+    onMounted(() => {
+      watch(
+        () => route,
+        () => {
+          console.log('change')
+        },
+        { deep: true }
+      )
+    })
+
     return {
+      isAuthificated,
       navButtons,
       navigateTo,
-      accountItems
+      accountItems,
+      router
     }
   }
 }
@@ -123,6 +143,10 @@ export default {
       height: fit-content;
       column-gap: 8vw;
       // background-color: aliceblue;
+
+      &-visited{
+        color: #FFAE00 !important;
+      }
     }
   }
 }
