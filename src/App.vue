@@ -1,7 +1,7 @@
 <template>
   <v-app>
 
-    <div class="header" v-if="isAuthificated">
+    <div class="header" v-if="isAuthorized">
       <div class="header-row">
         <div class="header-logo montaga">ЁLKIN-CARS</div>
         <div class="header-row-panel">
@@ -49,6 +49,7 @@
 import { useRoute, useRouter } from 'vue-router/composables'
 import lineSVG from './components/line.vue'
 import { onMounted, ref, watch } from 'vue'
+import useApi from './compositions/api'
 export default {
   name: 'App',
   components: {
@@ -84,23 +85,38 @@ export default {
     ]
     const router = useRouter()
     const route = useRoute()
+    const { checkMe } = useApi()
+    const token = localStorage.getItem('token')
 
-    const isAuthificated = ref(true)
+    const isAuthorized = ref(true)
     const navigateTo = (route) => {
       if (router.currentRoute.name !== route) { router.push({ name: route }) }
     }
+    const checkUserToken = async () => {
+      if (token) {
+        const result = await checkMe({ token })
+        if (result) {
+          isAuthorized.value = true
+        } else {
+          isAuthorized.value = false
+          navigateTo('login')
+        }
+      } else {
+        isAuthorized.value = true
+        // navigateTo('login')
+      }
+    }
     onMounted(() => {
+      checkUserToken()
       watch(
         () => route,
-        () => {
-          console.log('change')
-        },
+        () => checkUserToken(),
         { deep: true }
       )
     })
 
     return {
-      isAuthificated,
+      isAuthorized,
       navButtons,
       navigateTo,
       accountItems,

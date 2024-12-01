@@ -29,9 +29,20 @@
 }
 .theme--light:not(.v-icon){
     color: aliceblue;
-    background-color: black !important;
+    background-color: none;
 }
 
-*{
+.v-application p, input{
+    margin: 0 !important;
+    padding: 0 !important;
     color: aliceblue;
+}
+
+.theme--light.v-label {
+    color: rgba(255, 255, 255, 0.6) !important;
+}
+
+.v-input--is-focused {
+    color: #FFAE00 !important;
+    caret-color: #FFAE00 !important;
 }
