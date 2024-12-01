@@ -27,7 +27,7 @@
                 </v-list-item>
                 <v-list-item>
                   <v-btn text color="error">
-                    <div>Выход</div>
+                    <div @click="exitAccount">Выход</div>
                   </v-btn>
                 </v-list-item>
               </v-list>
@@ -40,7 +40,7 @@
     </div>
 
     <v-main>
-      <router-view />
+      <router-view :authStatus="isAuthorized" />
     </v-main>
   </v-app>
 </template>
@@ -86,15 +86,22 @@ export default {
     const router = useRouter()
     const route = useRoute()
     const { checkMe } = useApi()
-    const token = localStorage.getItem('token')
+    const token = ref('')
 
     const isAuthorized = ref(true)
     const navigateTo = (route) => {
       if (router.currentRoute.name !== route) { router.push({ name: route }) }
     }
+
+    const exitAccount = async () => {
+      await localStorage.clear()
+      navigateTo('login')
+    }
     const checkUserToken = async () => {
-      if (token) {
-        const result = await checkMe({ token })
+      token.value = localStorage.getItem('token')
+      if (token.value) {
+        const result = await checkMe({ token: token.value })
+        console.log(result)
         if (result) {
           isAuthorized.value = true
         } else {
@@ -102,15 +109,15 @@ export default {
           navigateTo('login')
         }
       } else {
-        isAuthorized.value = true
-        // navigateTo('login')
+        isAuthorized.value = false
+        navigateTo('login')
       }
     }
     onMounted(() => {
       checkUserToken()
       watch(
         () => route,
-        () => checkUserToken(),
+        () => { checkUserToken() },
         { deep: true }
       )
     })
@@ -120,7 +127,8 @@ export default {
       navButtons,
       navigateTo,
       accountItems,
-      router
+      router,
+      exitAccount
     }
   }
 }

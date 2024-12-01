@@ -6,24 +6,29 @@
         <div class="header-logo montaga">ЁLKIN-CARS</div>
       </div>
       <div class="header-form pa-6">
-        <div>
-          <h2>Создать аккаунт</h2>
+        <div class="header-form-top">
+          <h2>{{loginOrRegistr ? 'Вход' : 'Создать аккаунт'}}</h2>
+          <v-btn @click="() => {loginOrRegistr = !loginOrRegistr}" text>{{loginOrRegistr ? 'Зарегистрироваться' : 'Войти'}}</v-btn>
         </div>
-        <v-text-field v-model="formData.login" outlined :color="'#FFAE00'" label="Login"></v-text-field>
-        <v-text-field outlined :color="'#FFAE00'" label="Password"></v-text-field>
-        <v-text-field outlined :color="'#FFAE00'" label="Email"></v-text-field>
-        <v-btn text @click="registration">Register</v-btn>
+        <v-text-field v-model="formData.login" type="login" outlined :color="'#FFAE00'" label="Login"></v-text-field>
+        <v-text-field v-model="formData.password" type="password" outlined :color="'#FFAE00'" label="Password"></v-text-field>
+        <v-text-field v-model="formData.email" v-if="!loginOrRegistr" outlined :color="'#FFAE00'" label="Email"></v-text-field>
+        <v-btn text @click="registration">{{loginOrRegistr ? 'Вход' : 'Создать аккаунт'}}</v-btn>
       </div>
     </div>
   </div>
 </template>
 <script>
 import useApi from '@/compositions/api'
-import { reactive } from 'vue'
+import { onMounted, reactive, ref } from 'vue'
+import { useRouter } from 'vue-router/composables'
 
 export default {
   name: 'LogInView',
-  setup () {
+  prop: {
+    authStatus: Boolean
+  },
+  setup (props) {
     const { postQuery } = useApi()
 
     const formData = reactive({
@@ -31,12 +36,41 @@ export default {
       password: '',
       email: ''
     })
-    const registration = () => {
-      postQuery('users/registration', { ...formData })
+    const router = useRouter()
+    const loginOrRegistr = ref(true)
+    const errorMessage = ref('')
+    const registration = async () => {
+      if (!loginOrRegistr.value) {
+        const { data } = await postQuery('users/registration', { ...formData })
+        if (data.data.token) {
+          await localStorage.setItem('token', data.data.token)
+          router.push({ name: 'main' })
+        } else {
+          errorMessage.value = 'Ошибка'
+        }
+      } else {
+        const { data } = await postQuery('users/auth', { ...formData })
+        // eslint-disable-next-line no-debugger
+        console.log(data.data.token)
+        if (data.data.token) {
+          await localStorage.setItem('token', data.data.token)
+          router.push({ name: 'main' })
+        } else {
+          errorMessage.value = 'Ошибка'
+        }
+      }
+      onMounted(() => {
+        console.log(props.authStatus)
+        if (props.authStatus) {
+          router.push({ name: 'main' })
+        }
+      })
     }
     return {
       registration,
-      formData
+      formData,
+      loginOrRegistr,
+      errorMessage
     }
   }
 }
@@ -78,6 +112,12 @@ export default {
         row-gap: 12px;
         border: 1px solid aliceblue;
         border-radius: 30px;
+
+        &-top{
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+        }
 
         .input-wrapper{
           display: flex;

@@ -38,11 +38,15 @@
     color: aliceblue;
 }
 
-.theme--light.v-label {
+.theme--light.v-label, .theme--light.v-input input, .theme--light.v-input {
     color: rgba(255, 255, 255, 0.6) !important;
 }
 
 .v-input--is-focused {
     color: #FFAE00 !important;
     caret-color: #FFAE00 !important;
+}
+
+input:-internal-autofill-selected{
+    background-color: none !important;
 }

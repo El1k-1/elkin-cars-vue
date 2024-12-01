@@ -8,8 +8,8 @@ export default function useApi () {
   }
   const checkMe = async (token) => {
     const result = await Axios.post(url + 'users/me', token)
-    if (result.success) {
-      return result.data
+    if (result.data.success) {
+      return result.data.data.login
     } else {
       return false
     }
