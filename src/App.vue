@@ -1,31 +1,129 @@
 <template>
   <v-app>
 
-    <div class="header">header</div>
+    <div class="header">
+      <div class="header-row">
+        <div class="header-logo montaga">ЁLKIN-CARS</div>
+        <div class="header-row-panel">
+          <v-btn text @click="navigateTo(button.route)" v-for="button in navButtons" :key="button.name"> {{ button.name
+            }}</v-btn>
+        </div>
+        <div class="header-row-icons">
+          <v-menu :location="location">
+            <template v-slot:activator="{ on }">
+              <v-btn icon color="primary" v-on="on">
+                <v-icon size="32">mdi-account</v-icon>
+              </v-btn>
+            </template>
+
+            <v-list>
+              <v-list-item>
+                <div>elkin</div>
+              </v-list-item>
+              <v-list-item>
+                <v-btn text color="error">
+                  <div>Выход</div>
+                </v-btn>
+              </v-list-item>
+            </v-list>
+          </v-menu>
+        </div>
+      </div>
+      <div class="header-line">
+        <lineSVG></lineSVG>
+      </div>
+    </div>
 
     <v-main>
-      <router-view/>
+      <router-view />
     </v-main>
   </v-app>
 </template>
 
 <script>
-
+import { useRouter } from 'vue-router/composables'
+import lineSVG from './components/line.vue'
 export default {
   name: 'App',
+  components: {
+    lineSVG
+  },
 
-  data: () => (
-    {
-    //
-    })
+  setup (props) {
+    const navButtons = [
+      {
+        name: 'Главная',
+        route: 'main'
+      },
+      {
+        name: 'Инфо',
+        route: 'info'
+      },
+      {
+        name: 'Авто',
+        route: 'cars'
+      },
+      {
+        name: 'Сервис',
+        route: 'service'
+      },
+      {
+        name: 'Контакты',
+        route: 'contacts'
+      }
+    ]
+    const accountItems = [
+      { title: 'Привет' },
+      { title: 'Выход' }
+    ]
+    const router = useRouter()
+
+    const navigateTo = (route) => {
+      if (router.currentRoute.name !== route) { router.push({ name: route }) }
+    }
+    return {
+      navButtons,
+      navigateTo,
+      accountItems
+    }
+  }
 }
 </script>
-<style lang="scss">
-  @import url(./assets/main.scss);
-  .header{
-    display: flex;
-    color:aliceblue;
-    // background-color: black;
-    height: 6vh;
+<style scoped lang="scss">
+@import url(./assets/main.scss);
+
+.header {
+  display: flex;
+  color: aliceblue;
+  background-color: black;
+  height: 12vh;
+  padding: 0 16px;
+  padding-top: 24px;
+  flex-direction: column;
+
+  &-logo {
+    margin-left: 3vw;
+    font-size: 48px;
   }
+
+  &-line {
+    position: absolute;
+    width: 100%;
+    top: 7vh
+  }
+
+  &-row {
+    display: flex;
+    flex-direction: row;
+    column-gap: 10%;
+
+    &-panel {
+      display: flex;
+      flex-direction: row;
+      height: fit-content;
+      column-gap: 8vw;
+      // background-color: aliceblue;
+    }
+  }
+}
 </style>
