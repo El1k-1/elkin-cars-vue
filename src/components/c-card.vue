@@ -1,18 +1,17 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
   <div class="card">
-    <div class="card__price">{{ price }} руб/сутки</div>
-    <img max-height="75px" class="card__image" :src="image" />
-    <v-btn dark text @click="click()">Забронировать</v-btn>
+    <div class="card__price montaga">{{ car.price }} руб/сутки</div>
+    <img class="card__image" :src="car.image" />
+    <v-btn v-if="!options?.allowAction" dark text @click="click()">Забронировать</v-btn>
   </div>
 </template>
 <script>
 export default {
   name: 'c-card',
   props: {
-    id: Number,
-    price: Number,
-    image: String
+    car: Object,
+    options: Object
   },
   setup (_, context) {
     const click = (event) => {
@@ -26,7 +25,7 @@ export default {
 .card {
   display: flex;
   flex-direction: column;
-  width: 340px;
+  width: 400px;
   height: auto;
   align-items: center;
   background-color: rgba(228, 228, 228, 0.2);
@@ -35,14 +34,13 @@ export default {
   column-gap: 8px;
   row-gap: 4px;
   .card__price {
-
-    font-size: 12px;
+    color: #DAC19A;
+    font-size: 18px;
     text-transform: uppercase;
     text-align: center;
   }
   .card__image {
-    max-height: 75px !important;
-    max-width: 210px;
+    width: 70%;
     place-self: center;
   }
   .card__btn {

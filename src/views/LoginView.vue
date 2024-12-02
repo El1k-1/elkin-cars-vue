@@ -51,7 +51,6 @@ export default {
       } else {
         const { data } = await postQuery('users/auth', { ...formData })
         // eslint-disable-next-line no-debugger
-        console.log(data.data.token)
         if (data.data.token) {
           await localStorage.setItem('token', data.data.token)
           router.push({ name: 'main' })
@@ -60,7 +59,6 @@ export default {
         }
       }
       onMounted(() => {
-        console.log(props.authStatus)
         if (props.authStatus) {
           router.push({ name: 'main' })
         }
@@ -87,7 +85,7 @@ export default {
     background-position: center;
     background-blend-mode: multiply;
     background-color: rgba(0, 0, 0, 0.7);
-    animation: showElement 10s;
+    animation: showElement 7s ease;
 
     .wrapper{
       display: flex;
@@ -101,10 +99,13 @@ export default {
       display: flex;
       border: 1px solid aliceblue;
       border-radius: 30px;
+      backdrop-filter: blur(5px);
+      background-color: rgba(0, 0, 0, 0.288);
 
       &-logo{
         font-size: 60px;
         padding: 0 16px;
+
       }
       &-form{
         display: flex;
@@ -112,7 +113,8 @@ export default {
         row-gap: 12px;
         border: 1px solid aliceblue;
         border-radius: 30px;
-
+        backdrop-filter: blur(5px);
+        background-color: rgba(0, 0, 0, 0.288);
         &-top{
           display: flex;
           align-items: center;
@@ -151,7 +153,7 @@ export default {
   @keyframes showElement {
     from {
       background-size: 110%;
-      background-color: rgb(0, 0, 0);
+      background-color: rgb(0, 0, 0, 0.95);
     }
     to {
       background-size: 100%;

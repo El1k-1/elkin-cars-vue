@@ -23,7 +23,14 @@ const routes = [
   {
     path: '/cars',
     name: 'cars',
-    component: CarsView
+    component: CarsView,
+    children: [
+      {
+        path: ':id',
+        name: 'carsOne',
+        component: CarsView
+      }
+    ]
   },
   {
     path: '/service',

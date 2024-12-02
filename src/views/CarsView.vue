@@ -1,52 +1,136 @@
 <template>
-  <div class="about">
-    <h1 class="title">Премиум-Автомобили</h1>
-    <div class="cars">
-      <ccard
-        v-for="car in cars"
-        :key="car[0]"
-        :price="car.price"
-        :image="car.img"
-        @clickCar="click(car.id)"
-      >
-      </ccard>
+  <div>
+    <div v-if="!isShowSingle" class="about">
+      <h1 class="about-title montaga">Премиум-Автомобили</h1>
+      <div class="cars mt-10">
+        <ccard v-for="car in cars" :key="car[0]" :car="car" @clickCar="click(car.id)">
+        </ccard>
+      </div>
+    </div>
+    <div v-else class="about">
+      <div class="about-header">
+        <h1 class="about-title montaga">Доставка авто</h1>
+      </div>
+      <div class="wrapper">
+        <div>
+          <v-btn @click="goBack" text class="mt-1">
+            <v-icon>mdi-arrow-left</v-icon>
+            Назад
+          </v-btn>
+          <h1 class="about-title montaga">Ваш заказ успешно сформирован</h1>
+        </div>
+        <div>
+          <ccard :car="currentCar" :options="{allowAction: true}"></ccard>
+        </div>
+        <div class="about-title montaga" style="color: #DAC19A;">Забрать машину</div>
+        <div class="map mb-12">
+          <iframe src="https://yandex.ru/map-widget/v1/?um=constructor%3A0698d13c04d22a7b50e2357c586e0c98e35b0f41cfa139cefd96122516c8ce80&amp;source=constructor" width="625" height="450" frameborder="0"></iframe>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 <script>
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import ccard from '@/components/c-card.vue'
+import { useRouter } from 'vue-router/composables'
+import useApi from '@/compositions/api'
 export default {
   name: 'CarsView',
   components: { ccard },
   setup (context) {
-    const cars = ref([
-      { id: 1, price: 1999, img: 'https://i.imgur.com/uwF71rp.png' },
-      { id: 2, price: 2999, img: 'https://i.imgur.com/uwF71rp.png' },
-      { id: 3, price: 1999, img: 'https://i.imgur.com/uwF71rp.png' },
-      { id: 4, price: 1999, img: 'https://i.imgur.com/uwF71rp.png' },
-      { id: 5, price: 2999, img: 'https://i.imgur.com/uwF71rp.png' },
-      { id: 6, price: 3999, img: 'https://i.imgur.com/uwF71rp.png' },
-      { id: 7, price: 1999, img: 'https://i.imgur.com/uwF71rp.png' },
-      { id: 8, price: 2999, img: 'https://i.imgur.com/uwF71rp.png' },
-      { id: 9, price: 3999, img: 'https://i.imgur.com/uwF71rp.png' }
-    ])
+    const router = useRouter()
+    const { getQuery } = useApi()
+    const cars = ref([])
+    const currentCar = ref({})
+    const isShowSingle = ref(false)
 
     const click = (id) => {
-      console.log(id)
+      router.push({ path: `cars/${id}` })
+      isShowSingle.value = true
+      getCar()
     }
+    const getCar = async () => {
+      const result = await getQuery(`cars/${router.currentRoute.params.id}`)
+      currentCar.value = result.data?.data
+    }
+    const goBack = () => {
+      isShowSingle.value = false
+      router.push({ name: 'cars' })
+    }
+    onMounted(async () => {
+      const result = await getQuery('cars/list')
+      cars.value = result.data.data
+      if (router.currentRoute.name !== 'cars') {
+        isShowSingle.value = true
+        getCar()
+      } else isShowSingle.value = false
+    })
 
-    return { cars, click }
+    return {
+      cars,
+      currentCar,
+      click,
+      getCar,
+      router,
+      isShowSingle,
+      goBack
+    }
   }
 }
 </script>
-<style lang="scss">
-.cars {
+<style scoped lang="scss">
+.about {
   display: flex;
-  max-width: 1200px;
-  gap: 8px;
-  justify-self: center;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+
+  &-title {
+    font-size: 48px;
+    color: #DAC19A;
+
+  }
+  &-header {
+    display: flex;
+    align-items: center;
+  }
+
+  .cars {
+    display: flex;
+    max-width: 80%;
+    gap: 8px;
+    justify-self: center;
+    justify-content: center;
+    flex-flow: row wrap;
+  }
+}
+
+.wrapper{
+  display: flex;
+  flex-direction: column;
+  border: 1px solid aliceblue;
+  width: 40%;
   justify-content: center;
-  flex-flow: row wrap;
+  border-radius: 50px;
+  div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .about-title{
+    font-size: 36px;
+    color: aliceblue;
+  }
+}
+.accent{
+  color: #DAC19A;
+}
+.map{
+  width: fit-content;
+  border: 1px solid aliceblue;
+  border-radius: 50px;
+  overflow: hidden;
+  align-self: center;
 }
 </style>

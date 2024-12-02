@@ -6,6 +6,9 @@ export default function useApi () {
   const postQuery = async (route, data) => {
     return await Axios.post(url + route, data)
   }
+  const getQuery = async (route) => {
+    return await Axios.get(url + route)
+  }
   const checkMe = async (token) => {
     const result = await Axios.post(url + 'users/me', token)
     if (result.data.success) {
@@ -16,6 +19,7 @@ export default function useApi () {
   }
   return {
     postQuery,
+    getQuery,
     checkMe
   }
 }

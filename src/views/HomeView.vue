@@ -6,7 +6,7 @@
           <p>Посуточная аренда автомобилей</p>
         </div>
         <div class="rent-title-header">
-          <v-btn @click="navigateTo('cars')" class="add-car pl-3 pr-3">
+          <v-btn text @click="navigateTo('cars')" class="add-car pl-3 pr-3">
               <v-icon size=40>mdi-plus</v-icon>
             <div class="ml-6">
               Выбрать машину
@@ -21,8 +21,7 @@
         </div>
       </div>
     </div>
-    <div class="block">2</div>
-    <div class="block">3</div>
+    <div class="block">В разработке...</div>
   </div>
 </template>
 

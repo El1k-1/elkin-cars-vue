@@ -98,10 +98,9 @@ export default {
       navigateTo('login')
     }
     const checkUserToken = async () => {
-      token.value = localStorage.getItem('token')
+      token.value = await localStorage.getItem('token')
       if (token.value) {
         const result = await checkMe({ token: token.value })
-        console.log(result)
         if (result) {
           isAuthorized.value = true
         } else {
