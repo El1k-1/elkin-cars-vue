@@ -147,6 +147,7 @@ export default {
   &-logo {
     margin-left: 3vw;
     font-size: 48px;
+    color: #DAC19A;
   }
 
   &-line {
