@@ -53,17 +53,27 @@
       <div class="car">
         <div>
           <div class="top mt-12">
-            <p class="roboto" style="font-size: 80px; color: #DAC19A; font-weight: 800;">Mercedes Benz GLE-Class</p>
-            <p style="font-size: 36px; font-weight: 600;">Mercedes-Benz S-Class Coupe ждет вас! Забудьте о повседневности и окунитесь в
-              мир роскоши и комфорта.
-              Забронируйте свой автомобиль прямо сейчас и насладитесь незабываемой поездкой!</p>
+            <p class="roboto" style="font-size: 100px; color: #FFD280; font-weight: 500;">Mercedes Benz GLE-Class</p>
+            <div style="padding: 0 15%; line-height: 1.3;">
+              <p style="font-size: 36px; font-weight: 400;">Mercedes-Benz S-Class Coupe ждет вас! Забудьте о
+                повседневности и окунитесь в
+                мир роскоши и комфорта.
+                Забронируйте свой автомобиль прямо сейчас и насладитесь незабываемой поездкой!</p>
+            </div>
           </div>
         </div>
-        <div class="mecedes-top">
-          <div>123</div>
-
+        <div class="bottom">
+          <div class="stats">
+            <div>600л.с</div>
+            <div>340км/ч</div>
+            <div>3.3 сек</div>
+          </div>
+          <div class="button">Забронировать</div>
         </div>
       </div>
+    </div>
+    <div class="block car-side">
+      <div class="card roboto">Cтиль, мощность и комфорт — все в одном автомобиле. Забронируйте свою поездку уже сегодня!</div>
     </div>
     <div class="footer">
       <div class="header-logo montaga ml-10">ЁLKIN-CARS</div>
@@ -262,34 +272,29 @@ export default {
 
   .mercedes {
     background-image: url(../assets/img/parking.png);
-    background-blend-mode: overlay;
-    background-size: cover;
+    background-size: 100%;
     background-position: center;
-    background-color: rgba(0, 0, 0, 0.6);
 
     flex-direction: column;
     justify-content: space-between;
-    height: 90vh;
+    height: 100vh;
     border-bottom: 1px solid rgba(240, 248, 255, 0.363);
 
     .car {
       display: flex;
-      position: relative;
-      background-image: url(../assets/img/mercedes.png);
-      background-size: 100%;
-      backdrop-filter: blur(5px);
-      background-position: -100px 50px;
-      height: 90vh;
-      z-index: 3;
       flex-direction: column;
-      justify-content: space-between;
       align-items: center;
+      justify-content: space-between;
+      height: 100%;
 
       .top {
         display: flex;
-        width: 60vw;
+        width: fill;
+        border-radius: 30px;
         border: 1px solid aliceblue;
         padding: 12px;
+        line-height: 1.3;
+
         background-color: rgba(0, 0, 0, 0.274);
         backdrop-filter: blur(5px);
         flex-direction: column;
@@ -297,6 +302,51 @@ export default {
         text-align: center;
       }
 
+      .bottom {
+        display: flex;
+        width: fill;
+        justify-content: space-between;
+        align-items: center;
+
+        .stats{
+          display: flex;
+          height: fit-content;
+          width: fit-content;
+          flex-direction: row;
+          column-gap: 82px;
+          font-size: 52px;
+          font-weight: 600;
+          color: #F2E2C5;
+
+          div {
+            border-top: 4px solid #FFD280;
+          }
+        }
+      }
+
+    }
+  }
+
+  .car-side{
+    background-image: url(../assets/img/car2.png);
+    background-size: 100%;
+    background-position: center;
+
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    height: 100vh;
+    border-bottom: 1px solid rgba(240, 248, 255, 0.363);
+
+    .card{
+      display: flex;
+      font-size: 58px;
+      font-weight: 400;
+      border: 3px solid #FFD280;
+      color: rgb(221, 221, 221);
+      padding: 24px 32px;
+      border-radius: 30px;
+      text-align: center;
     }
   }
 
@@ -337,6 +387,15 @@ export default {
         color: #DAC19A;
       }
     }
+  }
+
+  .button{
+    display: flex;
+    font-size: 48px;
+    border: 3px solid #FFD280;
+    color: #FFD280;
+    padding: 12px 48px;
+    border-radius: 30px;
   }
 
   .block {
