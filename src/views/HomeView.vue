@@ -49,6 +49,22 @@
         <hr>
       </div>
     </div>
+    <div class="block mercedes">
+      <div class="car">
+        <div>
+          <div class="top mt-12">
+            <p class="roboto" style="font-size: 80px; color: #DAC19A; font-weight: 800;">Mercedes Benz GLE-Class</p>
+            <p style="font-size: 36px; font-weight: 600;">Mercedes-Benz S-Class Coupe ждет вас! Забудьте о повседневности и окунитесь в
+              мир роскоши и комфорта.
+              Забронируйте свой автомобиль прямо сейчас и насладитесь незабываемой поездкой!</p>
+          </div>
+        </div>
+        <div class="mecedes-top">
+          <div>123</div>
+
+        </div>
+      </div>
+    </div>
     <div class="footer">
       <div class="header-logo montaga ml-10">ЁLKIN-CARS</div>
       <div>
@@ -244,6 +260,46 @@ export default {
     border-bottom: 1px solid rgb(78, 78, 78);
   }
 
+  .mercedes {
+    background-image: url(../assets/img/parking.png);
+    background-blend-mode: overlay;
+    background-size: cover;
+    background-position: center;
+    background-color: rgba(0, 0, 0, 0.6);
+
+    flex-direction: column;
+    justify-content: space-between;
+    height: 90vh;
+    border-bottom: 1px solid rgba(240, 248, 255, 0.363);
+
+    .car {
+      display: flex;
+      position: relative;
+      background-image: url(../assets/img/mercedes.png);
+      background-size: 100%;
+      backdrop-filter: blur(5px);
+      background-position: -100px 50px;
+      height: 90vh;
+      z-index: 3;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+
+      .top {
+        display: flex;
+        width: 60vw;
+        border: 1px solid aliceblue;
+        padding: 12px;
+        background-color: rgba(0, 0, 0, 0.274);
+        backdrop-filter: blur(5px);
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+
+    }
+  }
+
   .footer {
     padding-top: 48px;
     padding-bottom: 12px;
@@ -259,7 +315,7 @@ export default {
 
     }
 
-    &-bottom{
+    &-bottom {
       display: flex;
       justify-content: center;
       align-items: center;
