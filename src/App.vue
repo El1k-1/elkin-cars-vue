@@ -8,30 +8,31 @@
           <v-btn
           text
           @click="navigateTo(button.route)"
-          v-for="button in navButtons"
+          v-for="button in navButtonsProxy"
           :key="button.name"
           :class="router.currentRoute.name === button.route ? 'header-row-panel-visited' : ''">
-          {{ button.name }}</v-btn>
-            </div>
-            <div class=" header-row-icons">
-            <v-menu :location="location">
-              <template v-slot:activator="{ on }">
-                <v-btn icon color="primary" v-on="on">
-                  <v-icon size="32">mdi-account</v-icon>
-                </v-btn>
-              </template>
+          {{ button.name }}
+          </v-btn>
+        </div>
+        <div class="header-row-icons">
+          <v-menu>
+            <template v-slot:activator="{ on }">
+              <v-btn icon color="primary" v-on="on">
+                <v-icon size="32" :title="'Вы под учетной записью администратора'" :color=" permissionId === 2 ? 'info' : ''">mdi-account</v-icon>
+              </v-btn>
+            </template>
 
-              <v-list>
-                <v-list-item>
-                  <div>elkin</div>
-                </v-list-item>
-                <v-list-item>
-                  <v-btn text color="error">
-                    <div @click="exitAccount">Выход</div>
-                  </v-btn>
-                </v-list-item>
-              </v-list>
-            </v-menu>
+            <v-list>
+              <v-list-item>
+                <div>elkin</div>
+              </v-list-item>
+              <v-list-item>
+                <v-btn text color="error">
+                  <div @click="exitAccount">Выход</div>
+                </v-btn>
+              </v-list-item>
+            </v-list>
+          </v-menu>
         </div>
       </div>
       <div class="header-line">
@@ -40,7 +41,7 @@
     </div>
 
     <v-main>
-      <router-view :authStatus="isAuthorized" />
+      <router-view :authStatus="isAuthorized" :token="token" />
     </v-main>
   </v-app>
 </template>
@@ -48,8 +49,9 @@
 <script>
 import { useRoute, useRouter } from 'vue-router/composables'
 import lineSVG from './components/line.vue'
-import { onMounted, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import useApi from './compositions/api'
+import useUser from './compositions/useUser'
 export default {
   name: 'App',
   components: {
@@ -63,8 +65,9 @@ export default {
         route: 'main'
       },
       {
-        name: 'Инфо',
-        route: 'info'
+        name: 'Заявки',
+        route: 'queries',
+        onlyAdmin: true
       },
       {
         name: 'Авто',
@@ -79,6 +82,13 @@ export default {
         route: 'contacts'
       }
     ]
+    const navButtonsProxy = computed(() => {
+      return navButtons.reduce((acc, el) => {
+        if (el.onlyAdmin && permissionId.value !== 2) return acc
+        acc.push(el)
+        return acc
+      }, [])
+    })
     const accountItems = [
       { title: 'Привет' },
       { title: 'Выход' }
@@ -87,7 +97,7 @@ export default {
     const route = useRoute()
     const { checkMe } = useApi()
     const token = ref('')
-
+    const permissionId = ref(0)
     const isAuthorized = ref(true)
     const navigateTo = (route) => {
       if (router.currentRoute.name !== route) { router.push({ name: route }) }
@@ -101,6 +111,8 @@ export default {
       token.value = await localStorage.getItem('token')
       if (token.value) {
         const result = await checkMe({ token: token.value })
+        const { user } = useUser()
+        permissionId.value = user.permission_id
         if (result) {
           isAuthorized.value = true
         } else {
@@ -127,7 +139,10 @@ export default {
       navigateTo,
       accountItems,
       router,
-      exitAccount
+      token,
+      exitAccount,
+      permissionId,
+      navButtonsProxy
     }
   }
 }
@@ -160,6 +175,7 @@ export default {
     display: flex;
     flex-direction: row;
     column-gap: 10%;
+    justify-content: space-between;
 
     &-panel {
       display: flex;

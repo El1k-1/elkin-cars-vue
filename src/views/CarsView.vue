@@ -37,15 +37,20 @@ import { useRouter } from 'vue-router/composables'
 import useApi from '@/compositions/api'
 export default {
   name: 'CarsView',
+  props: {
+    token: String
+  },
   components: { ccard },
-  setup (context) {
+  setup (props, context) {
     const router = useRouter()
-    const { getQuery } = useApi()
+    const { getQuery, postQuery } = useApi()
     const cars = ref([])
     const currentCar = ref({})
     const isShowSingle = ref(false)
 
-    const click = (id) => {
+    const click = async (id) => {
+      const result = await postQuery('query/add', { token: props.token, car_id: id })
+      if (!result) return
       router.push({ path: `cars/${id}` })
       isShowSingle.value = true
       getCar()
