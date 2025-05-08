@@ -1,8 +1,17 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
   <div class="card">
-    <div class="card__price montaga">{{ car.price }} руб/сутки</div>
-    <img class="card__image" :src="car.image" />
+    <div class="card__price montaga">
+      <div v-if="options?.withName" >
+        {{car.name}}
+      </div>
+      <div>
+        {{ car.price }} руб/сутки
+      </div>
+    </div>
+    <div class="card__image">
+      <img :src="require(`@/assets/img/cars/${car.image}.png`)" />
+    </div>
     <v-btn v-if="!options?.allowAction" dark text @click="click()">Забронировать</v-btn>
   </div>
 </template>
@@ -33,15 +42,28 @@ export default {
   border-radius: 8px;
   column-gap: 8px;
   row-gap: 4px;
+  justify-content: space-between;
   .card__price {
+    display: flex;
     color: #DAC19A;
+    width: 100%;
     font-size: 18px;
     text-transform: uppercase;
     text-align: center;
+    justify-content: space-around;
   }
   .card__image {
-    width: 70%;
+    display: flex;
+    height: 90px;
     place-self: center;
+    justify-content: center;
+
+    img{
+      overflow: hidden;
+      width: 75%;
+      object-fit: cover;
+      height: auto;
+    }
   }
   .card__btn {
     color: black !important;

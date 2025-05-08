@@ -51,7 +51,7 @@ export default {
       } else {
         const { data } = await postQuery('users/auth', { ...formData })
         // eslint-disable-next-line no-debugger
-        if (data.data.token) {
+        if (data?.data?.token) {
           await localStorage.setItem('token', data.data.token)
           router.push({ name: 'main' })
         } else {

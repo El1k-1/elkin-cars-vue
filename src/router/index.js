@@ -4,7 +4,7 @@ import HomeView from '../views/HomeView.vue'
 import CarsView from '@/views/CarsView.vue'
 import LoginView from '@/views/LoginView.vue'
 import ContactsVue from '@/views/ContactsVue.vue'
-import InfoView from '@/views/InfoView.vue'
+import QueriesView from '@/views/QueriesView.vue'
 import ServiceView from '@/views/ServiceView.vue'
 
 Vue.use(VueRouter)
@@ -16,9 +16,9 @@ const routes = [
     component: HomeView
   },
   {
-    path: '/info',
-    name: 'info',
-    component: InfoView
+    path: '/queries',
+    name: 'queries',
+    component: QueriesView
   },
   {
     path: '/cars',

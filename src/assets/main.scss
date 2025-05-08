@@ -16,6 +16,18 @@
     font-family: "Bebas Neue", sans-serif;
 }
 
+* {
+    &::-webkit-scrollbar{
+        background: black;
+    }
+    &::-webkit-scrollbar-track{
+    }
+    &::-webkit-scrollbar-thumb {
+        background-color: gray;
+        border-radius: 3px;
+    }
+}
+
 .v-main{
     background-color: black;
     color: aliceblue;
@@ -55,3 +67,23 @@ input:-webkit-autofill {
     -webkit-text-fill-color: aliceblue !important;
     -webkit-box-shadow: 0 0 0px 1000px inset;
 }
+
+.direction-column{
+    flex-flow: column nowrap;
+}
+
+.h-100{
+    height: 100%;
+}
+
+.theme--light.v-btn.v-btn--disabled{
+    color: rgba(128, 128, 128, 0.473) !important;
+}
+
+:root {
+    --v-success-base: green;
+    --v-error-base: red;
+    --v-warning-base: orange;
+    --v-info-base: blue;
+    --v-gray-base: gray;
+  }
