@@ -11,8 +11,11 @@ services:
     volumes:
       - ./frontend:/app
     networks:
-      - network-queue
+      - net
 
 networks:
-  network-queue:
-    driver: bridge
+  net: 
+    external: {
+      name: proxy_dev
+    }
+    
